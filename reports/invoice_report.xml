@@ -1,0 +1,28 @@
+<odoo>
+
+    <record id="report_invoice" model="ir.actions.report">
+        <field name="name">Invoice Report</field>
+        <field name="model">projects.invoice</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">project_management.report_invoice_view</field>
+        <field name="report_file">project_management.report_invoice</field>
+        <field name="binding_model_id" ref="model_projects_invoice"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_invoice_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-field="doc.name"/>
+                        <t t-if="doc.total">
+                            <h1><strong>TOTAL: </strong><span t-field="doc.total"/></h1>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

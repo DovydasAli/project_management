@@ -1,0 +1,38 @@
+<odoo>
+
+    <record id="report_project" model="ir.actions.report">
+        <field name="name">Project Report</field>
+        <field name="model">projects.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">project_management.report_project_view</field>
+        <field name="report_file">project_management.report_project</field>
+        <field name="binding_model_id" ref="model_projects_project"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_project_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-field="doc.name"/>
+                        <p>Description: <span t-field="doc.description"/></p>
+                        <p>From <span t-field="doc.start_date"/> to <span t-field="doc.end_date"/></p>
+                        <t t-if="doc.client_id">
+                            <p><strong>Client: </strong><span t-field="doc.client_id.name"/></p>
+                        </t>
+                        <p>Project manager: <span t-field="doc.project_manager_id"/> </p>
+                        <p>Employee count: <span t-field="doc.employee_current_count"/></p>
+                        <h3>Employees:</h3>
+                        <ul>
+                            <t t-foreach="doc.employee_ids" t-as="employee">
+                                <li><span t-field="employee.name"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

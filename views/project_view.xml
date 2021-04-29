@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+     <record model="ir.ui.view" id="project_form_view">
+            <field name="name">projects.form</field>
+            <field name="model">projects.project</field>
+            <field name="arch" type="xml">
+                <form string="Project Form">
+                    <header>
+                        <button name="send_project_report" string="Send info to Team leader" type="object" class="oe_highlight" confirm="Send Project info to Team Leader?"/>
+                        <field name="status" widget="statusbar" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <field name="image" widget="image" width="150" height="150"/>
+                        <group>
+                            <group string="General info">
+                                <field name="name"/>
+                                <field name="project_manager_id"/>
+                                <field name="client_id"/>
+                                <field name="team_leader_id"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="duration"/>
+                                <field name="active"/>
+                            </group>
+                            <group string="Employee info">
+                                <field name="employees"/>
+                                <field name="employee_current_count"/>
+                                <field name="employee_count" widget="progressbar"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                             <page string="Tasks">
+                                <field name="task_ids">
+                                    <form>
+                                        <group>
+                                            <field name="name"/>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="name"/>
+                                    </tree>
+                                 </field>
+                             </page>
+                             <page string="Employees">
+                                <field name="employee_ids"/>
+                             </page>
+                             <page string="Invoices">
+                                <field name="invoice_ids">
+                                    <form>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="status"/>
+                                            <field name="total"/>
+                                        </group>
+                                    </form>
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="status"/>
+                                        <field name="total"/>
+                                    </tree>
+                                </field>
+                             </page>
+                             <page string="Documents">
+                                <group>
+                                    <field name="document_ids" widget="one2many">
+                                        <tree quick_create="true" editable="bottom">
+                                            <field name="name"/>
+                                            <field name="file" filename="name"/>
+                                            <field name="comment"/>
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="file" filename="name"/>
+                                                <field name="comment"/>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="project_search_view">
+            <field name="name">projects.search</field>
+            <field name="model">projects.project</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <filter name="active_projects" string="Inactive projects"
+                            domain="[('active', '=', False)]"/>
+                    <group string="Group By">
+                        <filter name="by_project_manager" string="Project manager"
+                                context="{'group_by': 'team_leader_id'}"/>
+                        <filter name="by_client" string="Client"
+                                context="{'group_by': 'client_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- override the automatically generated list view for courses -->
+        <record model="ir.ui.view" id="project_tree_view">
+            <field name="name">projects.tree</field>
+            <field name="model">projects.project</field>
+            <field name="arch" type="xml">
+                <tree string="Project Tree" decoration-info="duration&lt;30" decoration-danger="duration&gt;90">
+                    <field name="name"/>
+                    <field name="client_id"/>
+                    <field name="task_ids"/>
+                    <field name="duration" invisible="1"/>
+                    <field name="status"/>
+                    <field name="employee_ids"/>
+                    <field name="employee_count" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+
+         <!-- calendar view -->
+        <record model="ir.ui.view" id="project_calendar_view">
+            <field name="name">projects.calendar</field>
+            <field name="model">projects.project</field>
+            <field name="arch" type="xml">
+                <calendar string="Project Calendar" date_start="start_date" date_stop="end_date" color="team_leader_id">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="projects_project_graph_view">
+            <field name="name">projects.project.graph</field>
+            <field name="model">projects.project</field>
+            <field name="arch" type="xml">
+                <graph string="Employees by project">
+                    <field name="name"/>
+                    <field name="employee_current_count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_projects_project_kanban">
+            <field name="name">projects.project.kanban</field>
+            <field name="model">projects.project</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="name">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Project name:
+                                    <field name="name"/>
+                                    <br/>
+                                    Start date:
+                                    <field name="start_date"/>
+                                    <br/>
+                                    duration:
+                                    <field name="duration"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="project_list_action">
+            <field name="name">Projects</field>
+            <field name="res_model">projects.project</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Create a project
+                </p>
+            </field>
+        </record>
+
+        <!-- top level menu: no parent -->
+        <menuitem id="main_projects_menu" name="DA Projects"/>
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="DA_projects_menu" name="Projects"
+                  parent="main_projects_menu"/>
+        <!-- the following menuitem should appear *after*
+             its parent my_module_menu and *after* its
+             action course_list_action -->
+        <menuitem id="projects_menu" name="Projects" parent="DA_projects_menu"
+                  action="project_list_action"/>
+        <!-- Full id location:
+             action="my_module.course_list_action"
+             It is not required when it is the same module -->
+
+</odoo>

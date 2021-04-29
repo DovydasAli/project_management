@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<odoo>
+
+        <record model="ir.actions.act_window" id="act_project_graph">
+            <field name="name">Employees by project</field>
+            <field name="res_model">projects.project</field>
+            <field name="view_mode">graph</field>
+            <field name="view_id"
+                   ref="project_management.projects_project_graph_view"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_project_calendar">
+            <field name="name">Projects</field>
+            <field name="res_model">projects.project</field>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="project_management.project_calendar_view"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_task_list">
+            <field name="name">Tasks</field>
+            <field name="res_model">projects.task</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_invoice_list">
+            <field name="name">Invoices</field>
+            <field name="res_model">projects.invoice</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.ui.view" id="board_project_form">
+            <field name="name">Project Dashboard Form</field>
+            <field name="model">board.board</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Project Dashboard">
+                    <board style="1-2">
+                        <column>
+                            <action
+                                string="Employees by project"
+                                name="%(act_project_graph)d"
+                                height="150"
+                                width="510"/>
+                            <action
+                                string="Tasks"
+                                name="%(act_task_list)d"/>
+                            <action
+                                string="Invoices"
+                                name="%(act_invoice_list)d"/>
+                        </column>
+                        <column>
+                            <action
+                                string="Projects"
+                                name="%(act_project_calendar)d"/>
+                        </column>
+                    </board>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="open_board_project">
+          <field name="name">Project Dashboard</field>
+          <field name="res_model">board.board</field>
+          <field name="view_mode">form</field>
+          <field name="usage">menu</field>
+          <field name="view_id" ref="board_project_form"/>
+        </record>
+
+        <menuitem
+            name="Project Dashboard" parent="project_management.DA_projects_menu"
+            action="open_board_project"
+            sequence="1"
+            id="menu_board_project"/>
+
+</odoo>

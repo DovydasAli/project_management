@@ -1,0 +1,22 @@
+<odoo>
+
+        <record model="projects.project" id="project0">
+            <field name="name">Project 0</field>
+            <field name="description">Project 0's description</field>
+            <field name="start_date">2021-04-12</field>
+            <field name="end_date">2021-04-13</field>
+        </record>
+        <record model="projects.project" id="project1">
+            <field name="name">Project 1</field>
+            <field name="description">Project 1's description</field>
+            <field name="start_date">2021-04-15</field>
+            <field name="end_date">2021-04-18</field>
+        </record>
+        <record model="projects.project" id="project2">
+            <field name="name">Project 2</field>
+            <field name="description">Project 2's description</field>
+            <field name="start_date">2021-04-11</field>
+            <field name="end_date">2021-04-16</field>
+        </record>
+
+</odoo>
