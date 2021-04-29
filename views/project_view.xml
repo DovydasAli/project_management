@@ -149,42 +149,30 @@
             <field name="name">projects.project.kanban</field>
             <field name="model">projects.project</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="name">
-                    <field name="color"/>
+                 <kanban>
                     <templates>
                         <t t-name="kanban-box">
-                            <div
-                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
-                                                  oe_kanban_global_click_edit oe_semantic_html_override
-                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
-                                <div class="oe_dropdown_kanban">
-                                    <!-- dropdown menu -->
-                                    <div class="oe_dropdown_toggle">
-                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
-                                        <ul class="oe_dropdown_menu">
-                                            <li>
-                                                <a type="delete">Delete</a>
-                                            </li>
-                                            <li>
-                                                <ul class="oe_kanban_colorpicker"
-                                                    data-field="color"/>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="oe_clear"></div>
-                                </div>
                                 <div t-attf-class="oe_kanban_content">
                                     <!-- title -->
                                     Project name:
-                                    <field name="name"/>
+                                    <strong><field name="name"/></strong>
                                     <br/>
                                     Start date:
-                                    <field name="start_date"/>
+                                    <i><field name="start_date"/></i>
+                                    <br/>
+                                    End date:
+                                    <i><field name="end_date"/></i>
                                     <br/>
                                     duration:
                                     <field name="duration"/>
+                                    Client:
+                                    <i><field name="client_id"/></i>
+                                    <br/>
+                                    Team Leader:
+                                    <i><field name="team_leader_id"/></i>
+                                    <br/>
+                                    <field name="image" widget="image" width="150" height="150"/>
                                 </div>
-                            </div>
                         </t>
                     </templates>
                 </kanban>
