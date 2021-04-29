@@ -5,7 +5,7 @@
             <field name="name">Project information template</field>
             <field name="email_from">${''}</field>
             <field name="subject">Project ${object.name} Info</field>
-            <field name="email_to">${object.team_leader_id.email}</field>
+            <field name="email_to">${object.team_leader_id.work_email}</field>
             <field name="lang">${object.lang}</field>
             <field name="model_id" ref="project_management.model_projects_project"/>
             <field name="report_template" ref="report_project"/>
