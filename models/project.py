@@ -59,23 +59,6 @@ class Project(models.Model):
             if record.employees < len(record.employee_ids):
                 raise exceptions.ValidationError(_("Increase max employees or remove excess employees"))
 
-    # @api.onchange('employees', 'employee_ids')
-    # def _verify_valid_employees(self):
-    #     if self.employees < 0:
-    #         return {
-    #             'warning': {
-    #                 'title': "Incorrect 'employee' value",
-    #                 'message': "The number of employees may not be negative",
-    #             },
-    #         }
-    #     if self.employees < len(self.employee_ids):
-    #         return {
-    #             'warning': {
-    #                 'title': "Too many employees",
-    #                 'message': "Increase employee limit or remove excess employees",
-    #             },
-    #         }
-
     @api.constrains('team_leader_id', 'employee_ids')
     def _check_leader_not_in_employees(self):
         for record in self:
